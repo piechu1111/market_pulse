@@ -1,0 +1,207 @@
+symbol,name,asset_type,market,category,risk_group,liquidity_class,systemic_role,narrative_role,bubble_history,narrative_exposure,data_priority,start_date,shock_history
+SPY,SPDR S&P 500 ETF,etf,US,ETF,high_beta,ultra,benchmark,leader,[],[],1,1999-01,"[""gfc-2008"", ""covid-crash""]"
+QQQ,Invesco QQQ Trust,etf,US,ETF,high_beta,ultra,benchmark,leader,"[""dot-com""]","[""ai-cycle""]",1,1999-03,"[""covid-crash""]"
+IWM,Russell 2000 ETF,etf,US,ETF,high_beta,ultra,stress_proxy,follower,[],[],1,2000-06,"[""gfc-2008"", ""covid-crash""]"
+DIA,Dow Jones ETF,etf,US,ETF,mid_beta,ultra,benchmark,laggard,[],[],2,1998-01,"[""gfc-2008"", ""covid-crash""]"
+AAPL,Apple Inc.,equity,US,Big Tech & Internet,high_beta,ultra,single_name,leader,[],"[""ai-cycle""]",1,1999-12,"[""covid-crash""]"
+MSFT,Microsoft Corporation,equity,US,Big Tech & Internet,mid_beta,ultra,single_name,quality_growth,"[""dot-com""]","[""ai-cycle""]",1,1999-12,"[""covid-crash""]"
+AMZN,Amazon.com Inc.,equity,US,Big Tech & Internet,high_beta,ultra,single_name,leader,[],"[""ai-cycle""]",1,1999-12,"[""covid-crash""]"
+GOOGL,Alphabet Inc. A,equity,US,Big Tech & Internet,high_beta,ultra,single_name,follower,[],"[""ai-cycle""]",1,2004-09,"[""covid-crash""]"
+META,Meta Platforms Inc.,equity,US,Big Tech & Internet,high_beta,high,single_name,follower,[],"[""social-bubble"",""ai-cycle""]",1,2012-06,"[""covid-crash""]"
+NFLX,Netflix Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],[],2,2002-06,"[""covid-crash""]"
+NVDA,NVIDIA Corporation,equity,US,Big Tech & Internet,high_beta,high,single_name,leader,[],"[""ai-cycle""]",1,1999-12,"[""covid-crash""]"
+AMD,Advanced Micro Devices,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""ai-cycle""]",2,1999-12,[]
+INTC,Intel Corporation,equity,US,Big Tech & Internet,mid_beta,ultra,single_name,laggard,"[""dot-com""]",[],2,1999-12,"[""gfc-2008""]"
+CSCO,Cisco Systems Inc.,equity,US,Big Tech & Internet,mid_beta,ultra,single_name,leader,"[""dot-com""]",[],2,1999-12,[]
+ORCL,Oracle Corporation,equity,US,Big Tech & Internet,mid_beta,ultra,single_name,laggard,"[""dot-com""]",[],3,1999-12,"[""gfc-2008""]"
+IBM,International Business Machines,equity,US,Big Tech & Internet,low_beta,ultra,single_name,laggard,"[""dot-com""]",[],3,1999-12,"[""gfc-2008""]"
+JPM,JPMorgan Chase & Co.,equity,US,Finance,high_beta,ultra,stress_proxy,leader,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+BAC,Bank of America,equity,US,Finance,high_beta,ultra,stress_proxy,follower,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+C,Citigroup Inc.,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""gfc-2008""]"
+WFC,Wells Fargo,equity,US,Finance,mid_beta,ultra,stress_proxy,laggard,[],[],2,1999-12,"[""gfc-2008""]"
+GS,Goldman Sachs Group,equity,US,Finance,high_beta,high,single_name,leader,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+MS,Morgan Stanley,equity,US,Finance,high_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+SCHW,Charles Schwab,equity,US,Finance,high_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+BLK,BlackRock Inc.,equity,US,Finance,mid_beta,high,single_name,asset_manager,[],[],2,1999-12,"[""covid-crash""]"
+XLF,Financials Sector ETF,etf,US,ETF,high_beta,ultra,sector_proxy,leader,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+XLK,Tech Sector ETF,etf,US,ETF,high_beta,ultra,sector_proxy,leader,[],"[""ai-cycle""]",1,1999-12,"[""covid-crash""]"
+XLE,Energy Sector ETF,etf,US,ETF,mid_beta,high,sector_proxy,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+XLI,Industrials Sector ETF,etf,US,ETF,mid_beta,ultra,sector_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+XLV,Health Care ETF,etf,US,ETF,low_beta,ultra,sector_proxy,defensive,[],[],3,1999-12,[]
+XLU,Utilities ETF,etf,US,ETF,low_beta,ultra,sector_proxy,defensive,[],[],3,1999-12,[]
+GE,General Electric,equity,US,Industrials,mid_beta,high,single_name,laggard,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+HON,Honeywell,equity,US,Industrials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+CAT,Caterpillar Inc.,equity,US,Industrials,mid_beta,high,single_name,leader,[],[],2,1999-12,"[""gfc-2008""]"
+BA,Boeing,equity,US,Industrials,high_beta,high,single_name,leader,[],[],1,1999-12,"[""covid-crash""]"
+MMM,3M Company,equity,US,Industrials,low_beta,high,single_name,defensive,[],[],3,1999-12,"[""gfc-2008""]"
+DE,Deere & Company,equity,US,Industrials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+UNP,Union Pacific,equity,US,Industrials,mid_beta,high,stress_proxy,laggard,[],[],2,1999-12,"[""covid-crash""]"
+UPS,United Parcel Service,equity,US,Industrials,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+FDX,FedEx,equity,US,Industrials,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""covid-crash""]"
+CSX,CSX Corp.,equity,US,Industrials,mid_beta,high,stress_proxy,laggard,[],[],2,1999-12,"[""covid-crash""]"
+NSC,Norfolk Southern,equity,US,Industrials,mid_beta,high,stress_proxy,laggard,[],[],2,1999-12,"[""covid-crash""]"
+TSLA,Tesla Inc.,equity,US,Industrials,high_beta,high,single_name,leader,[],"[""ai-cycle""]",1,2010-07,"[""covid-crash""]"
+GM,General Motors,equity,US,Industrials,high_beta,high,single_name,follower,[],[],1,2010-12,"[""covid-crash""]"
+F,Ford Motor Company,equity,US,Industrials,mid_beta,high,single_name,laggard,[],[],2,1999-12,"[""gfc-2008""]"
+LMT,Lockheed Martin,equity,US,Industrials,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+NOC,Northrop Grumman,equity,US,Industrials,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+RTX,RTX Corporation,equity,US,Industrials,mid_beta,high,single_name,defensive,[],[],2,1999-12,"[""covid-crash""]"
+HD,Home Depot,equity,US,Consumer Discretionary,mid_beta,ultra,single_name,follower,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+LOW,Lowe's Companies,equity,US,Consumer Discretionary,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+MCD,McDonald's,equity,US,Consumer Discretionary,low_beta,ultra,single_name,defensive,[],[],3,1999-12,[]
+NKE,Nike Inc.,equity,US,Consumer Discretionary,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+SBUX,Starbucks Corp.,equity,US,Consumer Discretionary,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+LULU,Lululemon Athletica,equity,US,Consumer Discretionary,high_beta,medium,single_name,follower,[],[],2,2007-08,"[""covid-crash""]"
+TJX,TJX Companies,equity,US,Consumer Discretionary,mid_beta,high,single_name,defensive,[],[],2,1999-12,"[""gfc-2008""]"
+TGT,Target Corp.,equity,US,Consumer Discretionary,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+BBY,Best Buy,equity,US,Consumer Discretionary,high_beta,high,single_name,leader,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+RCL,Royal Caribbean,equity,US,Consumer Discretionary,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""covid-crash""]"
+CCL,Carnival Corp.,equity,US,Consumer Discretionary,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""covid-crash""]"
+NCLH,Norwegian Cruise,equity,US,Consumer Discretionary,high_beta,medium,stress_proxy,follower,[],[],2,2013-02,"[""covid-crash""]"
+MAR,Marriott International,equity,US,Consumer Discretionary,high_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+HLT,Hilton Worldwide,equity,US,Consumer Discretionary,high_beta,high,single_name,follower,[],[],2,2014-01,"[""covid-crash""]"
+EXPE,Expedia Group,equity,US,Consumer Discretionary,high_beta,high,single_name,leader,[],[],1,2005-08,"[""covid-crash""]"
+XLY,Consumer Discretionary ETF,etf,US,ETF,mid_beta,ultra,sector_proxy,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+XOM,Exxon Mobil,equity,US,Energy,mid_beta,ultra,single_name,laggard,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+CVX,Chevron,equity,US,Energy,mid_beta,ultra,single_name,laggard,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+COP,ConocoPhillips,equity,US,Energy,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+SLB,Schlumberger,equity,US,Energy,high_beta,high,single_name,leader,[],[],1,1999-12,"[""gfc-2008""]"
+HAL,Halliburton,equity,US,Energy,high_beta,high,single_name,leader,[],[],1,1999-12,"[""gfc-2008""]"
+OXY,Occidental Petroleum,equity,US,Energy,high_beta,medium,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+EOG,EOG Resources,equity,US,Energy,mid_beta,medium,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+JNJ,Johnson & Johnson,equity,US,Healthcare,low_beta,ultra,single_name,defensive,[],[],3,1999-12,[]
+PFE,Pfizer,equity,US,Healthcare,low_beta,high,single_name,defensive,[],[],3,1999-12,"[""covid-crash""]"
+MRK,Merck & Co.,equity,US,Healthcare,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+ABBV,AbbVie,equity,US,Healthcare,low_beta,high,single_name,defensive,[],[],3,2013-02,[]
+LLY,Eli Lilly,equity,US,Healthcare,low_beta,high,single_name,leader,[],[],2,1999-12,[]
+UNH,UnitedHealth Group,equity,US,Healthcare,low_beta,ultra,single_name,defensive,[],[],2,1999-12,[]
+TMO,Thermo Fisher,equity,US,Healthcare,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+CVS,CVS Health,equity,US,Healthcare,mid_beta,high,single_name,defensive,[],[],3,1999-12,[]
+PG,Procter & Gamble,equity,US,Consumer Staples,low_beta,ultra,single_name,defensive,[],[],3,1999-12,[]
+KO,Coca-Cola,equity,US,Consumer Staples,low_beta,ultra,single_name,defensive,[],[],3,1999-12,[]
+PEP,PepsiCo,equity,US,Consumer Staples,low_beta,ultra,single_name,defensive,[],[],3,1999-12,[]
+WMT,Walmart,equity,US,Consumer Staples,low_beta,ultra,stress_proxy,defensive,[],[],2,1999-12,"[""covid-crash""]"
+COST,Costco,equity,US,Consumer Staples,low_beta,ultra,single_name,defensive,[],[],2,1999-12,"[""covid-crash""]"
+XLP,Consumer Staples ETF,etf,US,ETF,low_beta,ultra,sector_proxy,defensive,[],[],3,1999-12,[]
+SO,Southern Company,equity,US,Utilities,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+DUK,Duke Energy,equity,US,Utilities,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+NEE,NextEra Energy,equity,US,Utilities,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+AEP,American Electric Power,equity,US,Utilities,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+LIN,Linde plc,equity,US,Materials,low_beta,high,single_name,defensive,[],[],2,2018-11,"[""covid-crash""]"
+APD,Air Products,equity,US,Materials,low_beta,high,single_name,defensive,[],[],3,1999-12,[]
+SHW,Sherwin-Williams,equity,US,Materials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+MLM,Martin Marietta Materials,equity,US,Materials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+VMC,Vulcan Materials,equity,US,Materials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+XLB,Materials ETF,etf,US,ETF,mid_beta,ultra,sector_proxy,follower,[],[],2,1999-12,"[""gfc-2008""]"
+NEM,Newmont Corporation,equity,US,Commodities,low_beta,high,stress_proxy,defensive,[],[],2,1999-12,"[""gfc-2008""]"
+GOLD,Barrick Gold,equity,US,Commodities,low_beta,high,single_name,defensive,[],[],3,2002-08,[]
+GDX,Gold Miners ETF,etf,US,ETF,mid_beta,ultra,sector_proxy,follower,[],[],2,2006-06,"[""gfc-2008""]"
+CRM,Salesforce Inc.,equity,US,Big Tech & Internet,high_beta,high,single_name,follower,[],"[""cloud""]",1,2004-07,"[""covid-crash""]"
+ADBE,Adobe Inc.,equity,US,Big Tech & Internet,mid_beta,ultra,single_name,quality_growth,[],"[""cloud""]",2,1999-12,"[""covid-crash""]"
+NOW,ServiceNow Inc.,equity,US,Big Tech & Internet,high_beta,high,single_name,leader,[],"[""cloud""]",1,2012-07,"[""covid-crash""]"
+TEAM,Atlassian Corp.,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""cloud""]",2,2016-01,"[""covid-crash""]"
+SNOW,Snowflake Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],"[""ai-cycle"",""cloud""]",1,2020-10,[]
+MDB,MongoDB Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""cloud""]",2,2017-11,"[""covid-crash""]"
+DDOG,Datadog Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],"[""cloud""]",1,2019-10,"[""covid-crash""]"
+NET,Cloudflare Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],"[""ai-cycle"",""cloud""]",1,2019-10,"[""covid-crash""]"
+DOCU,DocuSign,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""cloud""]",2,2018-05,"[""covid-crash""]"
+OKTA,Okta Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""cloud"",""cybersecurity""]",2,2017-05,"[""covid-crash""]"
+ZS,Zscaler,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""cybersecurity""]",2,2018-04,"[""covid-crash""]"
+PANW,Palo Alto Networks,equity,US,Big Tech & Internet,high_beta,high,single_name,leader,[],"[""cybersecurity""]",1,2012-08,"[""covid-crash""]"
+CRWD,CrowdStrike,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],"[""cybersecurity""]",1,2019-07,"[""covid-crash""]"
+PLTR,Palantir Technologies,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],"[""ai-cycle""]",1,2020-10,[]
+U,Unity Software,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],"[""ai-cycle""]",1,2020-10,[]
+RBLX,Roblox Corp.,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""metaverse""]",2,2021-04,[]
+ROKU,Roku Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""streaming""]",2,2017-10,"[""covid-crash""]"
+TWLO,Twilio Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,follower,[],"[""cloud""]",2,2016-07,"[""covid-crash""]"
+FSLY,Fastly Inc.,equity,US,Big Tech & Internet,high_beta,low,single_name,follower,[],"[""edge-cloud""]",2,2019-06,"[""covid-crash""]"
+S,SentinelOne,equity,US,Big Tech & Internet,high_beta,low,single_name,leader,[],"[""ai-cycle"",""cybersecurity""]",1,2021-07,[]
+SQ,Block Inc.,equity,US,Fintech,high_beta,high,single_name,leader,[],"[""crypto-ecosystem""]",1,2015-08,"[""covid-crash""]"
+PYPL,PayPal,equity,US,Fintech,mid_beta,ultra,single_name,follower,[],"[""payments""]",2,2015-08,"[""covid-crash""]"
+AFRM,Affirm Holdings,equity,US,Fintech,high_beta,low,single_name,leader,[],"[""bnpl""]",1,2021-02,[]
+V,Visa Inc.,equity,US,Fintech,mid_beta,ultra,stress_proxy,payment_rails,[],"[""payments""]",2,2008-04,"[""covid-crash""]"
+MA,Mastercard,equity,US,Fintech,mid_beta,ultra,stress_proxy,payment_rails,[],"[""payments""]",2,2006-06,"[""covid-crash""]"
+HYG,High Yield Bond ETF,etf,US,ETF,high_beta,ultra,stress_proxy,leader,[],[],1,2007-05,"[""gfc-2008"", ""covid-crash""]"
+LQD,Investment Grade Bond ETF,etf,US,ETF,mid_beta,ultra,stress_proxy,laggard,[],[],2,2002-08,"[""gfc-2008""]"
+VIXY,VIX Futures ETF,etf,US,ETF,high_beta,ultra,stress_proxy,leader,[],[],1,2011-02,"[""covid-crash""]"
+KRE,Regional Bank ETF,etf,US,ETF,high_beta,ultra,stress_proxy,leader,[],[],1,2006-07,"[""gfc-2008"", ""covid-crash""]"
+KBE,Large Bank ETF,etf,US,ETF,high_beta,ultra,stress_proxy,follower,[],[],1,2005-12,"[""covid-crash"", ""gfc-2008""]"
+ICEW,Invesco Equal Weight Financial ETF,etf,US,ETF,mid_beta,high,sector_proxy,follower,[],[],2,NA,"[""covid-crash""]"
+REM,iShares Mortgage Real Estate ETF,etf,US,ETF,high_beta,high,stress_proxy,leader,[],[],1,2007-06,"[""gfc-2008""]"
+VNQ,Vanguard Real Estate ETF,etf,US,ETF,mid_beta,ultra,sector_proxy,laggard,[],[],2,2004-10,"[""gfc-2008""]"
+XOP,Oil & Gas Exploration ETF,etf,US,ETF,high_beta,high,stress_proxy,leader,[],[],1,2006-07,"[""covid-crash""]"
+XME,Metals & Mining ETF,etf,US,ETF,mid_beta,high,sector_proxy,follower,[],[],2,2006-07,"[""covid-crash""]"
+SPGI,S&P Global,equity,US,Finance,mid_beta,high,market_infrastructure,laggard,[],[],2,2001-02,"[""gfc-2008""]"
+MSCI,MSCI Inc.,equity,US,Finance,mid_beta,high,market_infrastructure,follower,[],[],2,2007-12,"[""covid-crash""]"
+BX,Blackstone Inc.,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,2007-07,"[""gfc-2008"", ""covid-crash""]"
+AAL,American Airlines,equity,US,Industrials,high_beta,high,stress_proxy,leader,[],[],1,2005-10,"[""covid-crash""]"
+ADI,Analog Devices,equity,US,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+ADSK,Autodesk Inc.,equity,US,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+AIG,American International Group,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""gfc-2008""]"
+AJG,Arthur J. Gallagher,equity,US,Finance,low_beta,medium,single_name,defensive,[],[],3,1999-12,[]
+ALL,Allstate,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""gfc-2008""]"
+ALLY,Ally Financial,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,2014-05,"[""covid-crash""]"
+AVGO,Broadcom Inc.,equity,US,Big Tech & Internet,high_beta,high,single_name,leader,[],[],1,2009-09,"[""covid-crash""]"
+AXP,American Express,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+AZO,AutoZone,equity,US,Consumer Discretionary,low_beta,medium,single_name,defensive,[],[],3,1999-12,[]
+BHP,BHP Group (ADR),adr,Global,Commodities,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008"", ""covid-crash""]"
+BK,BNY Mellon,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""gfc-2008""]"
+BP,BP plc (ADR),adr,Global,Energy,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+BR,Broadridge Financial,equity,US,Finance,low_beta,medium,single_name,defensive,[],[],3,2007-05,[]
+CB,Chubb Ltd.,equity,US,Finance,low_beta,medium,single_name,defensive,[],[],3,1999-12,[]
+CINF,Cincinnati Financial,equity,US,Finance,low_beta,medium,single_name,defensive,[],[],3,1999-12,[]
+CME,CME Group Inc.,equity,US,Finance,mid_beta,high,single_name,follower,[],[],2,2003-01,"[""covid-crash""]"
+COF,Capital One,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+DAL,Delta Air Lines,equity,US,Industrials,high_beta,high,stress_proxy,leader,[],[],1,2007-06,"[""covid-crash""]"
+DELL,Dell Technologies,equity,US,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,2019-01,[]
+DFS,Discover Financial,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,2007-07,"[""covid-crash""]"
+EMR,Emerson Electric,equity,US,Industrials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+EQT,EQT Corp.,equity,US,Energy,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+ERIC,Ericsson ADR,adr,Global,Telecom,mid_beta,high,single_name,follower,"[""dot-com""]",[],2,1999-12,[]
+ETN,Eaton Corp.,equity,US,Industrials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+FCX,Freeport-McMoRan,equity,US,Commodities,high_beta,high,single_name,leader,[],[],1,1999-12,"[""covid-crash""]"
+FITB,Fifth Third Bancorp,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+GOOG,Alphabet Inc. C,equity,US,Big Tech & Internet,high_beta,ultra,single_name,follower,[],[],1,2014-04,"[""covid-crash""]"
+HBAN,Huntington Bancshares,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+HES,Hess Corporation,equity,US,Energy,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+ICE,Intercontinental Exchange,equity,US,Finance,mid_beta,high,single_name,follower,[],[],2,2005-12,"[""covid-crash""]"
+INTU,Intuit Inc.,equity,US,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+ITW,Illinois Tool Works,equity,US,Industrials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+KCE,Insurance ETF,etf,US,ETF,low_beta,ultra,sector_proxy,defensive,[],[],3,2005-12,[]
+KEY,KeyCorp,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+KMI,Kinder Morgan,equity,US,Energy,low_beta,medium,single_name,defensive,[],[],3,2011-03,[]
+LUV,Southwest Airlines,equity,US,Industrials,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""covid-crash""]"
+MET,MetLife Inc.,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,2000-05,"[""gfc-2008""]"
+MPC,Marathon Petroleum,equity,US,Energy,mid_beta,high,single_name,follower,[],[],2,2011-07,"[""covid-crash""]"
+MTB,M&T Bank,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+MU,Micron Technology,equity,US,Big Tech & Internet,high_beta,high,single_name,leader,[],[],1,1999-12,"[""gfc-2008"", ""covid-crash""]"
+NOK,Nokia ADR,adr,Global,Telecom,mid_beta,high,single_name,leader,"[""dot-com""]",[],2,1999-12,[]
+NTNX,Nutanix,equity,US,Big Tech & Internet,mid_beta,medium,single_name,follower,[],[],2,2016-10,"[""covid-crash""]"
+NTRS,Northern Trust,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,[]
+ORLY,O'Reilly Automotive,equity,US,Consumer Discretionary,mid_beta,medium,single_name,defensive,[],[],3,1999-12,[]
+PFG,Principal Financial Group,equity,US,Finance,mid_beta,medium,single_name,follower,[],[],3,2001-11,"[""gfc-2008""]"
+PNC,PNC Financial,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+PRU,Prudential Financial,equity,US,Finance,mid_beta,medium,single_name,follower,[],[],3,2002-01,"[""gfc-2008""]"
+PSX,Phillips 66,equity,US,Energy,mid_beta,high,single_name,follower,[],[],2,2012-05,"[""covid-crash""]"
+QCOM,Qualcomm Inc.,equity,US,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+RF,Regions Financial,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+ROK,Rockwell Automation,equity,US,Industrials,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+SAP,SAP SE (ADR),adr,Global,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,[]
+SHEL,Shell plc (ADR),adr,Global,Energy,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+SHOP,Shopify Inc.,equity,US,Big Tech & Internet,high_beta,medium,single_name,leader,[],[],1,2015-06,"[""covid-crash""]"
+STT,State Street Corp.,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""gfc-2008""]"
+TFC,Truist Financial,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+TROW,T. Rowe Price,equity,US,Finance,mid_beta,medium,single_name,follower,[],[],3,1999-12,"[""covid-crash""]"
+TSM,Taiwan Semiconductor (ADR),adr,Global,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""covid-crash""]"
+TXN,Texas Instruments,equity,US,Big Tech & Internet,mid_beta,high,single_name,follower,[],[],2,1999-12,"[""gfc-2008""]"
+UAL,United Airlines,equity,US,Industrials,high_beta,high,stress_proxy,leader,[],[],1,2006-03,"[""covid-crash""]"
+USB,US Bancorp,equity,US,Finance,mid_beta,high,stress_proxy,follower,[],[],2,1999-12,"[""covid-crash""]"
+VLO,Valero Energy,equity,US,Energy,high_beta,high,single_name,leader,[],[],1,1999-12,"[""gfc-2008""]"
+WMB,Williams Companies,equity,US,Energy,low_beta,medium,single_name,defensive,[],[],3,1999-12,[]
+ZION,Zions Bancorp,equity,US,Finance,high_beta,high,stress_proxy,leader,[],[],1,1999-12,"[""covid-crash""]"
+GLD,SPDR Gold Shares,etf,US,Commodities,low_beta,ultra,stress_proxy,macro_hedge,[],"[""inflation"",""safe-haven""]",1,2004-11,"[""gfc-2008"",""covid-crash""]"
+SLV,iShares Silver Trust,etf,US,Commodities,mid_beta,ultra,stress_proxy,macro_hedge,[],"[""precious-metals"",""inflation""]",2,2006-04,"[""gfc-2008"",""covid-crash""]"
+USO,United States Oil Fund,etf,US,Commodities,high_beta,ultra,stress_proxy,energy_benchmark,[],"[""oil"",""energy-shock""]",1,2006-04,"[""gfc-2008"",""covid-crash""]"
+UNG,United States Natural Gas Fund,etf,US,Commodities,high_beta,high,stress_proxy,energy_benchmark,[],"[""natgas"",""energy-shock""]",2,2007-04,"[""gfc-2008"",""covid-crash""]"
+CPER,United States Copper Index Fund,etf,US,Commodities,high_beta,medium,stress_proxy,growth_barometer,[],"[""copper"",""global-growth""]",2,2011-11,"[""covid-crash""]"
+DBC,Invesco DB Commodity Index Tracking Fund,etf,US,Commodities,mid_beta,high,stress_proxy,commodity_benchmark,[],"[""broad-commodities"",""inflation""]",1,2006-02,"[""gfc-2008"",""covid-crash""]"

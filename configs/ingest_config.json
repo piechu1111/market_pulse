@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "symbols_s3_uri": "s3://market-pulse-data-eu-central-1/data/meta/dim_symbol/v1/dim_symbol.csv",
+  "months_back": 2,
+  "refresh": false
+}
