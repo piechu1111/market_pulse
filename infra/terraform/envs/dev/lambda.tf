@@ -4,13 +4,13 @@
 
 data "archive_file" "planner_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/../../../src/lambdas/planner"
+  source_dir  = "${path.module}/../../../../src/lambdas/planner"
   output_path = "${path.module}/build/planner.zip"
 }
 
 data "archive_file" "worker_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/../../../src/lambdas/worker"
+  source_dir  = "${path.module}/../../../../src/lambdas/worker"
   output_path = "${path.module}/build/worker.zip"
 }
 
