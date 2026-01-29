@@ -31,3 +31,17 @@ Thumbs.db
 *.tfstate.*
 crash.log
 crash.*.log
+
+# logs / tests
+*.log
+.pytest_cache/
+htmlcov/
+.coverage
+*.cover
+
+# build artifacts (Lambda / Glue)
+build/
+dist/
+*.zip
+layer_build/
+*.whl
