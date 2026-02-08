@@ -27,7 +27,7 @@ locals {
 # SILVER: alpha-vantage-bronze-to-silver
 
 resource "aws_glue_job" "silver_bronze_to_silver" {
-  name     = "alpha-vantage-bronze-to-silver"
+  name     = "alpha-vantage-bronze-to-silver-tf"
   role_arn = aws_iam_role.glue.arn
 
   glue_version      = "5.0"
@@ -67,7 +67,7 @@ resource "aws_glue_job" "silver_bronze_to_silver" {
 # GOLD: daily_ohlcv
 
 resource "aws_glue_job" "gold_daily_ohlcv" {
-  name     = "gold.daily_ohlcv"
+  name     = "gold.daily_ohlcv_tf"
   role_arn = aws_iam_role.glue.arn
 
   glue_version      = "5.0"
@@ -103,7 +103,7 @@ resource "aws_glue_job" "gold_daily_ohlcv" {
 # GOLD: daily_features
 
 resource "aws_glue_job" "gold_daily_features" {
-  name     = "gold.daily_features"
+  name     = "gold.daily_features_tf"
   role_arn = aws_iam_role.glue.arn
 
   glue_version      = "5.0"
@@ -139,7 +139,7 @@ resource "aws_glue_job" "gold_daily_features" {
 # GOLD: daily_features_dim
 
 resource "aws_glue_job" "gold_daily_features_dim" {
-  name     = "gold.daily_features_dim"
+  name     = "gold.daily_features_dim_tf"
   role_arn = aws_iam_role.glue.arn
 
   glue_version      = "5.0"
@@ -176,7 +176,7 @@ resource "aws_glue_job" "gold_daily_features_dim" {
 # GOLD: bubble_signals_daily
 
 resource "aws_glue_job" "gold_bubble_signals_daily" {
-  name     = "gold.bubble_signals_daily"
+  name     = "gold.bubble_signals_daily_tf"
   role_arn = aws_iam_role.glue.arn
 
   glue_version      = "5.0"
