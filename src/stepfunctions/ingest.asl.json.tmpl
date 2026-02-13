@@ -1,0 +1,87 @@
+{
+  "Comment": "Market Pulse TF: planner -> map(batches) -> worker -> glue bronze->silver -> start gold SM",
+  "StartAt": "PlanBatches",
+  "States": {
+    "PlanBatches": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${planner_lambda_arn}",
+        "Payload.$": "$"
+      },
+      "ResultPath": "$.plan",
+      "Next": "RunBatches"
+    },
+    "RunBatches": {
+      "Type": "Map",
+      "ItemsPath": "$.plan.Payload.batches",
+      "MaxConcurrency": 1,
+      "ResultPath": "$.batch_results",
+      "Iterator": {
+        "StartAt": "InvokeWorker",
+        "States": {
+          "InvokeWorker": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "FunctionName": "${worker_lambda_arn}",
+              "Payload.$": "$"
+            },
+            "OutputPath": "$.Payload",
+            "Retry": [
+              {
+                "ErrorEquals": ["States.ALL"],
+                "IntervalSeconds": 2,
+                "BackoffRate": 2,
+                "MaxAttempts": 3
+              }
+            ],
+            "End": true
+          }
+        }
+      },
+      "Next": "RunGlueBronzeToSilver"
+    },
+    "RunGlueBronzeToSilver": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "${silver_job_name}",
+        "Arguments": {
+          "--BRONZE_PATH": "${bronze_path}",
+          "--SILVER_PATH": "${silver_path}",
+          "--YEAR_MONTH_START.$": "$.plan.Payload.glue_year_month_start",
+          "--YEAR_MONTH_END.$": "$.plan.Payload.glue_year_month_end"
+        }
+      },
+      "ResultPath": "$.silver_run",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 30,
+          "BackoffRate": 2,
+          "MaxAttempts": 2
+        }
+      ],
+      "Next": "StartGoldWorkflow"
+    },
+    "StartGoldWorkflow": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::states:startExecution.sync",
+      "Parameters": {
+        "StateMachineArn": "${gold_state_machine_arn}",
+        "Input": {
+          "gold_year_start.$": "$.plan.Payload.gold_year_start",
+          "gold_year_end.$": "$.plan.Payload.gold_year_end",
+          "silver_path": "${silver_path}",
+          "gold_daily_path": "${gold_daily_path}",
+          "gold_features_path": "${gold_features_path}",
+          "dim_symbol_path": "${dim_symbol_path}",
+          "gold_features_dim_path": "${gold_features_dim_path}",
+          "gold_bubble_signals_path": "${gold_bubble_signals_path}"
+        }
+      },
+      "End": true
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "Comment": "MarketPulseGold TF: gold.daily_ohlcv -> gold.daily_features -> (parallel) gold.daily_features_dim + gold.bubble_signals_daily",
+  "StartAt": "RunGoldDailyOHLCV",
+  "States": {
+    "RunGoldDailyOHLCV": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "${gold_daily_ohlcv_job_name}",
+        "Arguments": {
+          "--SILVER_PATH.$": "$.silver_path",
+          "--GOLD_DAILY_PATH.$": "$.gold_daily_path",
+          "--YEAR_START.$": "$.gold_year_start",
+          "--YEAR_END.$": "$.gold_year_end"
+        }
+      },
+      "ResultPath": "$.daily_ohlcv_run",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 30,
+          "BackoffRate": 2,
+          "MaxAttempts": 2
+        }
+      ],
+      "Next": "RunGoldDailyFeatures"
+    },
+    "RunGoldDailyFeatures": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "${gold_daily_features_job_name}",
+        "Arguments": {
+          "--DAILY_PATH.$": "$.gold_daily_path",
+          "--FEATURES_PATH.$": "$.gold_features_path",
+          "--YEAR_START.$": "$.gold_year_start",
+          "--YEAR_END.$": "$.gold_year_end"
+        }
+      },
+      "ResultPath": "$.daily_features_run",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 30,
+          "BackoffRate": 2,
+          "MaxAttempts": 2
+        }
+      ],
+      "Next": "RunGoldDownstream"
+    },
+    "RunGoldDownstream": {
+      "Type": "Parallel",
+      "Branches": [
+        {
+          "StartAt": "RunDailyFeaturesDim",
+          "States": {
+            "RunDailyFeaturesDim": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "${gold_daily_features_dim_job_name}",
+                "Arguments": {
+                  "--DAILY_FEATURES_PATH.$": "$.gold_features_path",
+                  "--DIM_SYMBOL_PATH.$": "$.dim_symbol_path",
+                  "--OUTPUT_PATH.$": "$.gold_features_dim_path",
+                  "--YEAR_START.$": "$.gold_year_start",
+                  "--YEAR_END.$": "$.gold_year_end"
+                }
+              },
+              "ResultPath": "$.daily_features_dim_run",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "IntervalSeconds": 30,
+                  "BackoffRate": 2,
+                  "MaxAttempts": 2
+                }
+              ],
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "RunBubbleSignalsDaily",
+          "States": {
+            "RunBubbleSignalsDaily": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "${gold_bubble_signals_job_name}",
+                "Arguments": {
+                  "--FEATURES_PATH.$": "$.gold_features_path",
+                  "--DIM_SYMBOL_PATH.$": "$.dim_symbol_path",
+                  "--OUTPUT_PATH.$": "$.gold_bubble_signals_path",
+                  "--YEAR_START.$": "$.gold_year_start",
+                  "--YEAR_END.$": "$.gold_year_end"
+                }
+              },
+              "ResultPath": "$.bubble_signals_daily_run",
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.ALL"],
+                  "IntervalSeconds": 30,
+                  "BackoffRate": 2,
+                  "MaxAttempts": 2
+                }
+              ],
+              "End": true
+            }
+          }
+        }
+      ],
+      "End": true
+    }
+  }
+}

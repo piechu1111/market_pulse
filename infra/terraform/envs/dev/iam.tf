@@ -4,7 +4,7 @@
 
 data "aws_iam_policy_document" "assume_lambda" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {
@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "assume_lambda" {
 
 data "aws_iam_policy_document" "assume_glue" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {
@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "assume_glue" {
 
 data "aws_iam_policy_document" "assume_stepfunctions" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
     principals {
@@ -230,4 +230,23 @@ resource "aws_iam_role_policy" "stepfunctions_invoke_and_glue" {
   name   = "${var.project_name}-${var.environment}-stepfunctions-invoke-glue"
   role   = aws_iam_role.stepfunctions.id
   policy = data.aws_iam_policy_document.stepfunctions_invoke_and_glue.json
+}
+
+# allow Step Functions to start another Step Functions execution (.sync)
+data "aws_iam_policy_document" "stepfunctions_start_gold_sync" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "states:StartExecution",
+      "states:DescribeExecution",
+      "states:StopExecution"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "stepfunctions_start_gold_sync" {
+  name   = "${var.project_name}-${var.environment}-stepfunctions-start-gold-sync"
+  role   = aws_iam_role.stepfunctions.id
+  policy = data.aws_iam_policy_document.stepfunctions_start_gold_sync.json
 }
