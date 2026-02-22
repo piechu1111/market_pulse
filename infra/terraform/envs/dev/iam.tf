@@ -206,6 +206,25 @@ resource "aws_iam_role_policy" "stepfunctions_logs" {
   policy = data.aws_iam_policy_document.cloudwatch_logs.json
 }
 
+data "aws_iam_policy_document" "stepfunctions_log_delivery" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "stepfunctions_log_delivery" {
+  name   = "${var.project_name}-${var.environment}-stepfunctions-log-delivery"
+  role   = aws_iam_role.stepfunctions.id
+  policy = data.aws_iam_policy_document.stepfunctions_log_delivery.json
+}
+
 # for now, allow Step Functions to invoke Lambdas and start Glue jobs broadly
 data "aws_iam_policy_document" "stepfunctions_invoke_and_glue" {
   statement {
