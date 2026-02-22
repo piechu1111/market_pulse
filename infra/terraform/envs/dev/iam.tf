@@ -210,23 +210,18 @@ data "aws_iam_policy_document" "stepfunctions_log_delivery" {
   statement {
     effect = "Allow"
     actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
       "logs:CreateLogDelivery",
       "logs:GetLogDelivery",
       "logs:UpdateLogDelivery",
       "logs:DeleteLogDelivery",
-      "logs:ListLogDeliveries"
+      "logs:ListLogDeliveries",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:PutResourcePolicy",
+      "logs:DescribeResourcePolicies"
     ]
+
     resources = ["*"]
   }
 }
