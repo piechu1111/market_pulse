@@ -217,6 +217,18 @@ data "aws_iam_policy_document" "stepfunctions_log_delivery" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogDelivery",
+      "logs:GetLogDelivery",
+      "logs:UpdateLogDelivery",
+      "logs:DeleteLogDelivery",
+      "logs:ListLogDeliveries"
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_role_policy" "stepfunctions_log_delivery" {
