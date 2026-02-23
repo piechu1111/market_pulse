@@ -276,3 +276,26 @@ resource "aws_iam_role_policy" "stepfunctions_start_gold_sync" {
   role   = aws_iam_role.stepfunctions.id
   policy = data.aws_iam_policy_document.stepfunctions_start_gold_sync.json
 }
+
+data "aws_iam_policy_document" "stepfunctions_eventbridge_managed_rules" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "events:PutRule",
+      "events:PutTargets",
+      "events:DescribeRule",
+      "events:ListTargetsByRule",
+      "events:RemoveTargets",
+      "events:DeleteRule",
+      "events:TagResource",
+      "events:UntagResource"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "stepfunctions_eventbridge_managed_rules" {
+  name   = "${var.project_name}-${var.environment}-stepfunctions-events-managed-rules"
+  role   = aws_iam_role.stepfunctions.id
+  policy = data.aws_iam_policy_document.stepfunctions_eventbridge_managed_rules.json
+}
