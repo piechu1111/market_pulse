@@ -299,3 +299,41 @@ resource "aws_iam_role_policy" "stepfunctions_eventbridge_managed_rules" {
   role   = aws_iam_role.stepfunctions.id
   policy = data.aws_iam_policy_document.stepfunctions_eventbridge_managed_rules.json
 }
+
+###############################
+# EventBridge Scheduler role
+###############################
+
+data "aws_iam_policy_document" "assume_scheduler" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["scheduler.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "scheduler_to_sfn" {
+  name               = "${var.project_name}-${var.environment}-scheduler-to-sfn"
+  assume_role_policy = data.aws_iam_policy_document.assume_scheduler.json
+  tags               = local.common_tags
+}
+
+data "aws_iam_policy_document" "scheduler_to_sfn" {
+  statement {
+    effect  = "Allow"
+    actions = ["states:StartExecution"]
+
+    # TF ingest SM
+    resources = [aws_sfn_state_machine.ingest_tf.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "scheduler_to_sfn" {
+  name   = "${var.project_name}-${var.environment}-scheduler-to-sfn"
+  role   = aws_iam_role.scheduler_to_sfn.id
+  policy = data.aws_iam_policy_document.scheduler_to_sfn.json
+}
