@@ -8,6 +8,10 @@ on:
       - fix/**
   pull_request:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-lambdas:
     runs-on: ubuntu-latest
@@ -32,14 +36,30 @@ jobs:
           test -f build/planner.zip
           test -f build/worker.zip
 
-      - name: Upload planner artifact
+      - name: Upload planner artifact to GitHub Actions
         uses: actions/upload-artifact@v4
         with:
           name: planner-zip
           path: build/planner.zip
 
-      - name: Upload worker artifact
+      - name: Upload worker artifact to GitHub Actions
         uses: actions/upload-artifact@v4
         with:
           name: worker-zip
           path: build/worker.zip
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: eu-central-1
+
+      - name: Upload lambda artifacts to S3
+        run: |
+          ARTIFACT_PREFIX="artifacts/lambda/${GITHUB_SHA}"
+
+          aws s3 cp build/planner.zip \
+            s3://market-pulse-data-eu-central-1-dev/${ARTIFACT_PREFIX}/planner.zip
+
+          aws s3 cp build/worker.zip \
+            s3://market-pulse-data-eu-central-1-dev/${ARTIFACT_PREFIX}/worker.zip
