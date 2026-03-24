@@ -1,17 +1,35 @@
-##########################################
-# Lambda packaging (zip from repo source)
-##########################################
+############################
+# Lambda artifact locations
+############################
 
-data "archive_file" "planner_zip" {
-  type        = "zip"
-  source_dir  = "${path.module}/../../../../src/lambdas/planner"
-  output_path = "${path.module}/build/planner.zip"
+locals {
+  lambda_artifact_keys = {
+    planner = "artifacts/lambda/planner.zip"
+    worker  = "artifacts/lambda/worker.zip"
+  }
+
+  lambda_log_group_names = {
+    planner = "/aws/lambda/${var.project_name}-${var.environment}-planner"
+    worker  = "/aws/lambda/${var.project_name}-${var.environment}-worker"
+  }
 }
 
-data "archive_file" "worker_zip" {
-  type        = "zip"
-  source_dir  = "${path.module}/../../../../src/lambdas/worker"
-  output_path = "${path.module}/build/worker.zip"
+#####################################
+# CloudWatch log groups for Lambdas
+#####################################
+
+resource "aws_cloudwatch_log_group" "lambda_planner" {
+  name              = local.lambda_log_group_names.planner
+  retention_in_days = 30
+
+  tags = local.common_tags
+}
+
+resource "aws_cloudwatch_log_group" "lambda_worker" {
+  name              = local.lambda_log_group_names.worker
+  retention_in_days = 30
+
+  tags = local.common_tags
 }
 
 ##################
@@ -23,15 +41,14 @@ resource "aws_lambda_function" "planner" {
   role          = aws_iam_role.lambda_planner.arn
 
   runtime = "python3.11"
-  handler = "handler.lambda_handler"
+  handler = "handler.handler"
 
-  filename         = data.archive_file.planner_zip.output_path
-  source_code_hash = data.archive_file.planner_zip.output_base64sha256
+  s3_bucket = aws_s3_bucket.data_lake.bucket
+  s3_key    = local.lambda_artifact_keys.planner
 
-  timeout      = 30
-  memory_size  = 256
-  # pin Lambda architecture to avoid implicit defaults and ensure reproducible builds
-  # x86_64 safer than arm64 - for now
+  timeout     = 30
+  memory_size = 256
+
   architectures = ["x86_64"]
 
   environment {
@@ -39,6 +56,12 @@ resource "aws_lambda_function" "planner" {
   }
 
   tags = local.common_tags
+
+  depends_on = [
+    aws_iam_role_policy.lambda_planner_logs,
+    aws_iam_role_policy.lambda_planner_s3,
+    aws_cloudwatch_log_group.lambda_planner
+  ]
 }
 
 #################
@@ -50,14 +73,14 @@ resource "aws_lambda_function" "worker" {
   role          = aws_iam_role.lambda_worker.arn
 
   runtime = "python3.11"
-  handler = "handler.lambda_handler"
+  handler = "handler.handler"
 
-  filename         = data.archive_file.worker_zip.output_path
-  source_code_hash = data.archive_file.worker_zip.output_base64sha256
+  s3_bucket = aws_s3_bucket.data_lake.bucket
+  s3_key    = local.lambda_artifact_keys.worker
 
-  timeout      = 60
-  memory_size  = 512
-  # same reason as before
+  timeout     = 60
+  memory_size = 512
+
   architectures = ["x86_64"]
 
   environment {
@@ -65,4 +88,10 @@ resource "aws_lambda_function" "worker" {
   }
 
   tags = local.common_tags
+
+  depends_on = [
+    aws_iam_role_policy.lambda_worker_logs,
+    aws_iam_role_policy.lambda_worker_s3,
+    aws_cloudwatch_log_group.lambda_worker
+  ]
 }

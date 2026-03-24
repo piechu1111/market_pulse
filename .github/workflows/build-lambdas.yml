@@ -12,6 +12,10 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  AWS_REGION: eu-central-1
+  ARTIFACT_BUCKET: market-pulse-data-eu-central-1-dev
+
 jobs:
   build-lambdas:
     runs-on: ubuntu-latest
@@ -56,10 +60,8 @@ jobs:
 
       - name: Upload lambda artifacts to S3
         run: |
-          ARTIFACT_PREFIX="artifacts/lambda/${GITHUB_SHA}"
-
           aws s3 cp build/planner.zip \
-            s3://market-pulse-data-eu-central-1-dev/${ARTIFACT_PREFIX}/planner.zip
+          s3://${ARTIFACT_BUCKET}/artifacts/lambda/planner.zip
 
           aws s3 cp build/worker.zip \
-            s3://market-pulse-data-eu-central-1-dev/${ARTIFACT_PREFIX}/worker.zip
+            s3://${ARTIFACT_BUCKET}/artifacts/lambda/worker.zip
