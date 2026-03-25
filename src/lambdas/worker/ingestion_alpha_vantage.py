@@ -1,14 +1,11 @@
 from datetime import datetime
 from time import sleep
 from alpha_vantage_client import get_symbol_monthly_data, RATE_LIMIT_SLEEP_SECONDS
-import pandas as pd
 from config import logger
-from tqdm import tqdm
-from tqdm.contrib.logging import logging_redirect_tqdm
 import time
-
 import boto3
 import io
+import csv
 
 s3 = boto3.client("s3")
 
@@ -44,16 +41,19 @@ def _parse_s3_uri(uri: str):
     return bucket, key
 
 
-def _read_symbols_df(symbols_path: str) -> pd.DataFrame:
+def _read_symbols(symbols_path: str) -> list[dict]:
     """
     Reads CSV locally (dev) or from S3 (lambda).
+    Returns a list of dicts.
     """
     if symbols_path.startswith("s3://"):
         b, k = _parse_s3_uri(symbols_path)
         obj = s3.get_object(Bucket=b, Key=k)
-        body = obj["Body"].read()
-        return pd.read_csv(io.BytesIO(body))
-    return pd.read_csv(symbols_path)
+        body = obj["Body"].read().decode("utf-8")
+        return list(csv.DictReader(io.StringIO(body)))
+
+    with open(symbols_path, "r", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
 
 def fetch_and_store_alpha_vantage_data(
@@ -61,9 +61,8 @@ def fetch_and_store_alpha_vantage_data(
     start_year_month: str,
     end_year_month: str,
     limit=None,
-    symbols_subset=None, # list of symbols for a batch (e.g. 50)
+    symbols_subset=None,
 ):
-    # validate input range
     if not is_valid_year_month(start_year_month):
         raise ValueError(f"start_year_month is invalid: {start_year_month}")
 
@@ -74,36 +73,41 @@ def fetch_and_store_alpha_vantage_data(
         raise ValueError(
             f"end_year_month {end_year_month} is earlier than start_year_month {start_year_month}"
         )
-    
+
     subset_size = "ALL" if symbols_subset is None else len(symbols_subset)
     logger.info(
-        f"Worker started with range {start_year_month} -> {end_year_month}, "
-        f"symbols_subset size={subset_size}"
+        "Worker started with range %s -> %s, symbols_subset size=%s",
+        start_year_month,
+        end_year_month,
+        subset_size,
     )
-    print(f"logger.level: {logger.level}")
 
     start_ts = time.time()
+    rows = _read_symbols(symbols_path)
 
-    df = _read_symbols_df(symbols_path)
+    if not rows:
+        raise ValueError("Input CSV is empty")
 
-    if "symbol" not in df.columns or "start_date" not in df.columns:
-        raise ValueError("Input CSV must contain 'symbol' and 'start_date' columns")
+    required_columns = {"symbol", "start_date"}
+    missing = required_columns - set(rows[0].keys())
+    if missing:
+        raise ValueError(
+            f"Input CSV must contain columns: {sorted(required_columns)}. Missing: {sorted(missing)}"
+        )
 
-    # batch mode – only symbols from this batch
     if symbols_subset is not None:
-        df = df[df["symbol"].isin(symbols_subset)].reset_index(drop=True)
-        logger.info(f"Batch mode enabled: {len(df)} symbols in this batch")
+        allowed = set(symbols_subset)
+        rows = [row for row in rows if row.get("symbol") in allowed]
+        logger.info("Batch mode enabled: %s symbols in this batch", len(rows))
 
     if limit is not None:
-        df = df.head(limit)
-        logger.info(f"Limiting to first {limit} symbols: {list(df['symbol'])}")
+        rows = rows[: int(limit)]
+        logger.info("Limiting to first %s symbols", limit)
 
-    # do not fetch future months for safety (use UTC to be deterministic)
     today_year_month = datetime.utcnow().strftime("%Y-%m")
     max_end_year_month = min(end_year_month, today_year_month)
 
-    # statistics for logging
-    total_symbols = len(df)
+    total_symbols = len(rows)
     skipped_symbols = 0
     total_requests = 0
     success_requests = 0
@@ -112,90 +116,94 @@ def fetch_and_store_alpha_vantage_data(
     failed_pairs = set()
 
     logger.info(
-        f"Starting Alpha Vantage fetch for {total_symbols} symbols, "
-        f"range: {start_year_month} → {max_end_year_month}"
+        "Starting Alpha Vantage fetch for %s symbols, range: %s → %s",
+        total_symbols,
+        start_year_month,
+        max_end_year_month,
     )
 
-    with logging_redirect_tqdm():
-        for idx in tqdm(df.index, desc="Symbols", unit="symbol"):
-            symbol = df.at[idx, "symbol"]
-            first_year_month = str(df.at[idx, "start_date"]).strip()
+    for idx, row in enumerate(rows, start=1):
+        symbol = (row.get("symbol") or "").strip()
+        first_year_month = str(row.get("start_date") or "").strip()
 
-            if not is_valid_year_month(first_year_month):
-                logger.info(f"[SKIP] {symbol} — invalid start_date {first_year_month}")
-                skipped_symbols += 1
-                continue
+        logger.info("Processing symbol %s/%s: %s", idx, total_symbols, symbol)
 
-            if first_year_month > max_end_year_month:
-                logger.info(
-                    f"[SKIP] {symbol} — symbol starts at {first_year_month}, "
-                    f"later than requested end {max_end_year_month}"
-                )
-                skipped_symbols += 1
-                continue
+        if not symbol:
+            logger.info("[SKIP] empty symbol")
+            skipped_symbols += 1
+            continue
 
-            effective_start = max(start_year_month, first_year_month)
-            effective_end = max_end_year_month
+        if not is_valid_year_month(first_year_month):
+            logger.info("[SKIP] %s — invalid start_date %s", symbol, first_year_month)
+            skipped_symbols += 1
+            continue
 
-            for month in month_range(effective_start, effective_end):
-                logger.info(f"[FETCH] {symbol} — month {month}")
-                total_requests += 1
+        if first_year_month > max_end_year_month:
+            logger.info(
+                "[SKIP] %s — symbol starts at %s, later than requested end %s",
+                symbol,
+                first_year_month,
+                max_end_year_month,
+            )
+            skipped_symbols += 1
+            continue
 
-                # overwrite in S3 (same key)
-                response = get_symbol_monthly_data(symbol=symbol, month=month, save=True)
+        effective_start = max(start_year_month, first_year_month)
+        effective_end = max_end_year_month
 
-                if not response.get("ok"):
-                    error_requests += 1
-                    symbols_with_errors.add(symbol)
-                    failed_pairs.add((symbol, month))
-                    logger.error(f"[ERR] {symbol} — {response.get('error')} for {month}")
-                    sleep(RATE_LIMIT_SLEEP_SECONDS)
-                    continue
+        for month in month_range(effective_start, effective_end):
+            logger.info("[FETCH] %s — month %s", symbol, month)
+            total_requests += 1
 
-                success_requests += 1
-                if (symbol, month) in failed_pairs:
-                    failed_pairs.remove((symbol, month))
-                logger.info(f"[OK] {symbol} — stored for month {month}")
+            response = get_symbol_monthly_data(symbol=symbol, month=month, save=True)
+
+            if not response.get("ok"):
+                error_requests += 1
+                symbols_with_errors.add(symbol)
+                failed_pairs.add((symbol, month))
+                logger.error("[ERR] %s — %s for %s", symbol, response.get("error"), month)
                 sleep(RATE_LIMIT_SLEEP_SECONDS)
+                continue
+
+            success_requests += 1
+            failed_pairs.discard((symbol, month))
+            logger.info("[OK] %s — stored for month %s", symbol, month)
+            sleep(RATE_LIMIT_SLEEP_SECONDS)
 
     duration_seconds = time.time() - start_ts
     requests_per_minute = (
         total_requests / duration_seconds * 60 if duration_seconds > 0 else 0.0
     )
     unresolved_error_requests = len(failed_pairs)
+    processed_symbols = total_symbols - skipped_symbols
 
     logger.info("Data fetching and storing completed.")
-    processed_symbols = total_symbols - skipped_symbols
     logger.info("========== SUMMARY ==========")
-    logger.info(f"Total symbols         : {total_symbols}")
-    logger.info(f"Processed symbols     : {processed_symbols}")
-    logger.info(f"Skipped symbols       : {skipped_symbols}")
-    logger.info(f"Total API requests    : {total_requests}")
-    logger.info(f"Successful requests   : {success_requests}")
-    logger.info(f"Error requests        : {error_requests}")
-    logger.info(f"Symbols with any error: {len(symbols_with_errors)}")
-    logger.info(f"Unresolved errors     : {unresolved_error_requests}")
-    logger.info(f"Total duration        : {duration_seconds:.1f} s")
-    logger.info(f"Requests per minute   : {requests_per_minute:.2f}")
-
-    if symbols_with_errors:
-        logger.info(
-            "Error symbols (any month failed): " + ", ".join(sorted(symbols_with_errors))
-        )
+    logger.info("Total symbols         : %s", total_symbols)
+    logger.info("Processed symbols     : %s", processed_symbols)
+    logger.info("Skipped symbols       : %s", skipped_symbols)
+    logger.info("Total API requests    : %s", total_requests)
+    logger.info("Successful requests   : %s", success_requests)
+    logger.info("Error requests        : %s", error_requests)
+    logger.info("Symbols with any error: %s", len(symbols_with_errors))
+    logger.info("Unresolved errors     : %s", unresolved_error_requests)
+    logger.info("Requests/minute       : %.2f", requests_per_minute)
+    logger.info("Duration (sec)        : %.2f", duration_seconds)
 
     return {
-        "ok": True,
-        "message": "Data fetching and storing completed.",
-        "stats": {
-            "total_symbols": total_symbols,
-            "processed_symbols": processed_symbols,
-            "skipped_symbols": skipped_symbols,
-            "total_requests": total_requests,
-            "success_requests": success_requests,
-            "error_requests": error_requests,
-            "unresolved_error_requests": unresolved_error_requests,
-            "duration_seconds": duration_seconds,
-            "requests_per_minute": requests_per_minute,
-            "symbols_with_errors": sorted(symbols_with_errors),
-        },
+        "ok": unresolved_error_requests == 0,
+        "total_symbols": total_symbols,
+        "processed_symbols": processed_symbols,
+        "skipped_symbols": skipped_symbols,
+        "total_requests": total_requests,
+        "successful_requests": success_requests,
+        "error_requests": error_requests,
+        "symbols_with_errors": sorted(symbols_with_errors),
+        "unresolved_error_requests": unresolved_error_requests,
+        "failed_pairs": [
+            {"symbol": symbol, "month": month}
+            for symbol, month in sorted(failed_pairs)
+        ],
+        "requests_per_minute": requests_per_minute,
+        "duration_seconds": duration_seconds,
     }

@@ -1,9 +1,7 @@
 import os
 import sys
-from dotenv import load_dotenv
 from logging_config import setup_logging
 
-load_dotenv()
 logger = setup_logging()
 
 def get_env_var(name: str) -> str:
