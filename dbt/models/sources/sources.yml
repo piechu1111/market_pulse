@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: market_pulse_meta
+    database: awsdatacatalog
+    schema: market_pulse_meta
+    tables:
+      - name: gold_daily_features
+      - name: gold_daily_features_dim
+      - name: gold_bubble_signals_daily_dim
+      - name: daily_ohlcv
+      - name: dim_symbol_csv

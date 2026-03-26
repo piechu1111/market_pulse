@@ -1,0 +1,25 @@
+
+
+name: 'market_pulse_dbt'
+version: '1.0.0'
+
+profile: 'market_pulse_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+models:
+  market_pulse_dbt:
+    marts:
+      daily:
+        +materialized: view
+      agg:
+        +materialized: table

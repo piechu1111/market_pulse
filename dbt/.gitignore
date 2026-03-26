@@ -1,0 +1,20 @@
+# dbt build artifacts
+target/
+dbt_packages/
+
+# Python / virtual env
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# logs
+logs/
+*.log
+
+# secrets
+profiles.yml
