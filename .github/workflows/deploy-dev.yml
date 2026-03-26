@@ -1,12 +1,14 @@
-name: Build Lambda Packages
+name: Deploy Dev
 
 on:
   push:
     branches:
       - main
-      - feat/**
-      - fix/**
-  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: terraform-dev
+  cancel-in-progress: false
 
 permissions:
   id-token: write
@@ -17,8 +19,12 @@ env:
   ARTIFACT_BUCKET: market-pulse-data-eu-central-1-dev
 
 jobs:
-  build-lambdas:
+  deploy:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: infra/terraform/envs/dev
 
     steps:
       - name: Checkout repository
@@ -31,26 +37,17 @@ jobs:
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
+        working-directory: .
 
       - name: Build lambda zip packages
         run: bash scripts/build_lambda_zips.sh
+        working-directory: .
 
       - name: Verify artifacts exist
         run: |
           test -f build/planner.zip
           test -f build/worker.zip
-
-      - name: Upload planner artifact to GitHub Actions
-        uses: actions/upload-artifact@v4
-        with:
-          name: planner-zip
-          path: build/planner.zip
-
-      - name: Upload worker artifact to GitHub Actions
-        uses: actions/upload-artifact@v4
-        with:
-          name: worker-zip
-          path: build/worker.zip
+        working-directory: .
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -67,3 +64,16 @@ jobs:
 
           aws s3 cp build/worker.zip \
             s3://${ARTIFACT_BUCKET}/${ARTIFACT_PREFIX}/worker.zip
+        working-directory: .
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -input=false -var="artifact_version=${GITHUB_SHA}"
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false -var="artifact_version=${GITHUB_SHA}"
