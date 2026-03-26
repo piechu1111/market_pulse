@@ -16,6 +16,6 @@ locals {
     S3_BRONZE_PREFIX = "data/bronze"
 
     # placeholder for now, set real value in AWS console
-    ALPHA_API_KEY     = "CHANGE ME"
+    ALPHA_API_KEY = "CHANGE ME"
   }
 }
