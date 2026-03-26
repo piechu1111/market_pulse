@@ -56,12 +56,14 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: eu-central-1
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload lambda artifacts to S3
         run: |
+          ARTIFACT_PREFIX="artifacts/lambda/${GITHUB_SHA}"
+
           aws s3 cp build/planner.zip \
-          s3://${ARTIFACT_BUCKET}/artifacts/lambda/planner.zip
+            s3://${ARTIFACT_BUCKET}/${ARTIFACT_PREFIX}/planner.zip
 
           aws s3 cp build/worker.zip \
-            s3://${ARTIFACT_BUCKET}/artifacts/lambda/worker.zip
+            s3://${ARTIFACT_BUCKET}/${ARTIFACT_PREFIX}/worker.zip

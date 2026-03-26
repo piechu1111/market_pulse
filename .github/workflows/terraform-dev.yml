@@ -45,9 +45,9 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -input=false
+        run: terraform plan -input=false -var="artifact_version=${GITHUB_SHA}"
 
-      # for now apply authomatically only for main
+      # apply authomatically only for main
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false -var="artifact_version=${GITHUB_SHA}"
