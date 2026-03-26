@@ -3,9 +3,11 @@
 ############################
 
 locals {
+  lambda_artifact_prefix = "artifacts/lambda/${var.artifact_version}"
+
   lambda_artifact_keys = {
-    planner = "artifacts/lambda/planner.zip"
-    worker  = "artifacts/lambda/worker.zip"
+    planner = "${local.lambda_artifact_prefix}/planner.zip"
+    worker  = "${local.lambda_artifact_prefix}/worker.zip"
   }
 
   lambda_log_group_names = {
