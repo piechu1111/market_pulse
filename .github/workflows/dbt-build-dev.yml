@@ -60,8 +60,5 @@ jobs:
       - name: dbt parse
         run: dbt parse --profiles-dir .
 
-      - name: dbt run daily model
-        run: dbt run --profiles-dir . --select vw_price_with_bubbles_daily
-
-      - name: dbt test daily model
-        run: dbt test --profiles-dir . --select vw_price_with_bubbles_daily
+      - name: dbt build marts
+        run: dbt build --profiles-dir . --select marts
