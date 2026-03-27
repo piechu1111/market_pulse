@@ -142,12 +142,12 @@ signals AS (
 SELECT
     b.symbol,
     b.trade_date,
-    b.year,
 
     -- data grain
     month(b.trade_date)                         AS month_no,
     week(b.trade_date)                          AS week_no,
     quarter(b.trade_date)                       AS quarter_no,
+    year(b.trade_date)                          AS year,
     CAST(date_trunc('month',  CAST(b.trade_date AS timestamp)) AS date) AS month_start_date,
     CAST(date_trunc('week',   CAST(b.trade_date AS timestamp)) AS date) AS week_start_date,
     date_format(CAST(b.trade_date AS timestamp), '%Y-%m')      AS year_month,

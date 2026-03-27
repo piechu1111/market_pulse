@@ -4,8 +4,6 @@ WITH daily AS (
     SELECT
         symbol,
         trade_date,
-        year,
-        week_no,
         week_start_date,
 
         -- price and volume
@@ -75,8 +73,8 @@ ranked AS (
 agg AS (
     SELECT
         symbol,
-        year,
-        week_no,
+        year(week_start_date) AS year,
+        week(week_start_date) AS week_no,
         week_start_date,
 
         -- weekly date range
@@ -176,7 +174,7 @@ agg AS (
         AVG(ret_21d_vs_spy) AS avg_ret_21d_vs_spy,
         approx_percentile(ret_21d_vs_spy, 0.9) AS ret_21d_vs_spy_p90,
 
-        -- dimentions (symbol level, effectively static)
+        -- dimentions
         arbitrary(asset_type)      AS asset_type,
         arbitrary(category)        AS category,
         arbitrary(risk_group)      AS risk_group,
@@ -187,8 +185,6 @@ agg AS (
     FROM ranked
     GROUP BY
         symbol,
-        year,
-        week_no,
         week_start_date
 )
 

@@ -4,8 +4,6 @@ WITH daily AS (
     SELECT
         symbol,
         trade_date,
-        year,
-        month_no,
         month_start_date,
 
         -- price and volume
@@ -75,8 +73,8 @@ ranked AS (
 agg AS (
     SELECT
         symbol,
-        year,
-        month_no,
+        year(month_start_date) AS year,
+        month(month_start_date) AS month_no,
         month_start_date,
         MIN(trade_date) AS first_trade_date,
         MAX(trade_date) AS last_trade_date,
@@ -186,8 +184,6 @@ agg AS (
     FROM ranked
     GROUP BY
         symbol,
-        year,
-        month_no,
         month_start_date
 )
 

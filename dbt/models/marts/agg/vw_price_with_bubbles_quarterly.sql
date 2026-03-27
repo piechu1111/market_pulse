@@ -15,8 +15,8 @@ daily_q AS (
 
 SELECT
     symbol,
-    year,
-    quarter_no,
+    year(quarter_start_date) AS year,
+    quarter(quarter_start_date) AS quarter_no,
     quarter_start_date,
 
     COUNT(*) AS days_in_quarter,
@@ -55,24 +55,15 @@ SELECT
     SUM(is_bubble_base)  / CAST(COUNT(*) AS double) AS share_bubble_base,
     SUM(is_crash_base)   / CAST(COUNT(*) AS double) AS share_crash_base,
 
-    asset_type,
-    category,
-    risk_group,
-    liquidity_class,
-    systemic_role,
-    narrative_role,
-    data_priority
+    arbitrary(asset_type)      AS asset_type,
+    arbitrary(category)        AS category,
+    arbitrary(risk_group)      AS risk_group,
+    arbitrary(liquidity_class) AS liquidity_class,
+    arbitrary(systemic_role)   AS systemic_role,
+    arbitrary(narrative_role)  AS narrative_role,
+    arbitrary(data_priority)   AS data_priority
 
 FROM daily_q
 GROUP BY
     symbol,
-    year,
-    quarter_no,
-    quarter_start_date,
-    asset_type,
-    category,
-    risk_group,
-    liquidity_class,
-    systemic_role,
-    narrative_role,
-    data_priority;
+    quarter_start_date;
