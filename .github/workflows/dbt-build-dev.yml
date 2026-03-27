@@ -1,0 +1,61 @@
+name: dbt Build Dev
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-central-1
+  DBT_BUCKET: market-pulse-data-eu-central-1-dev
+
+jobs:
+  dbt-dev:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: dbt
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dbt dependencies
+        run: pip install -r requirements-dbt.txt
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Generate dbt profile from template
+        run: |
+          sed \
+            -e "s|<BUCKET>|${DBT_BUCKET}|g" \
+            profiles_template.yml > profiles.yml
+
+      - name: Show generated profile target paths
+        run: |
+          grep "s3_staging_dir" profiles.yml
+          grep "s3_data_dir" profiles.yml
+
+      - name: dbt deps
+        run: dbt deps --profiles-dir .
+
+      - name: dbt debug
+        run: dbt debug --profiles-dir .
+
+      - name: dbt parse
+        run: dbt parse --profiles-dir .
