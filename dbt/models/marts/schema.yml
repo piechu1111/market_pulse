@@ -4,28 +4,48 @@ models:
   - name: vw_price_with_bubbles_daily
     description: "Daily semantic dataset for BI: OHLCV + engineered features + bubble/crash signals."
     columns:
-      - name: symbol
-        tests:
-          - not_null
+    - name: symbol
+      description: "Ticker symbol of the asset (e.g. AMZN, TSLA)"
+      tests:
+        - not_null
 
-      - name: trade_date
-        tests:
-          - not_null
+    - name: trade_date
+      description: "Trading date representing the observation day"
+      tests:
+        - not_null
 
-      # grain: (symbol, trade_date) has to be unique
+    - name: open_price
+      description: "Opening price of the asset for the given trading day"
+
+    - name: high_price
+      description: "Highest traded price during the trading day"
+
+    - name: low_price
+      description: "Lowest traded price during the trading day"
+
+    - name: close_price
+      description: "Closing price of the asset for the trading day"
+
+    - name: volume
+      description: "Total traded volume for the asset on the given day"
+
+    - name: bubble_score
+      description: "Model-derived score (0-100) indicating likelihood of a price bubble"
+
+    - name: regime_label
+      description: "Market regime classification based on model signals: bubble, crash, or normal"
+
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - symbol
-            - trade_date
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - symbol
+          - trade_date
 
-      # sanity: regime values check
-      - dbt_utils.expression_is_true:
-          expression: "regime_label in ('bubble','crash','normal')"
+    - dbt_utils.expression_is_true:
+        expression: "regime_label in ('bubble','crash','normal')"
 
-      # sanity: bubble_score in range 0-100 (if NULL, catch it)
-      - dbt_utils.expression_is_true:
-          expression: "bubble_score between 0 and 100"
+    - dbt_utils.expression_is_true:
+        expression: "bubble_score between 0 and 100"
 
   - name: vw_price_with_bubbles_weekly
     description: "Weekly aggregation built from daily semantic dataset."
@@ -33,11 +53,29 @@ models:
       - name: symbol
         tests: [not_null]
 
+      - name: week_start_date
+        tests: [not_null]
+  
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - symbol
+          - week_start_date
+
   - name: vw_price_with_bubbles_monthly
     description: "Monthly aggregation built from daily semantic dataset."
     columns:
       - name: symbol
         tests: [not_null]
+
+      - name: month_start_date
+        tests: [not_null]
+    
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - symbol
+          - month_start_date
 
   - name: vw_price_with_bubbles_quarterly
     description: "Quarterly aggregation built from daily semantic dataset."
@@ -45,8 +83,26 @@ models:
       - name: symbol
         tests: [not_null]
 
+      - name: quarter_start_date
+        tests: [not_null]
+
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - symbol
+          - quarter_start_date
+
   - name: vw_price_with_bubbles_yearly
     description: "Yearly aggregation built from daily semantic dataset."
     columns:
       - name: symbol
         tests: [not_null]
+
+      - name: year
+        tests: [not_null]
+
+    tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - symbol
+          - year
