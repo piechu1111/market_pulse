@@ -14,16 +14,16 @@ models:
       tests:
         - not_null
 
-    - name: open_price
+    - name: open
       description: "Opening price of the asset for the given trading day"
 
-    - name: high_price
+    - name: high
       description: "Highest traded price during the trading day"
 
-    - name: low_price
+    - name: low
       description: "Lowest traded price during the trading day"
 
-    - name: close_price
+    - name: close
       description: "Closing price of the asset for the trading day"
 
     - name: volume
