@@ -19,8 +19,9 @@ The project focuses on ingesting, processing, and transforming intraday market d
   and derived datasets optimized for analytical queries and signal research.
 
 - **Analytics**
-  Amazon Athena and Amazon QuickSight are used for exploratory analysis and BI,
-  with dbt models providing a semantic and metrics layer on top of curated data.
+  Amazon Athena is used as a serverless SQL query layer on top of curated S3/Glue datasets.
+  dbt models provide a semantic and metrics layer for analytical consumption.
+  The curated outputs are designed to be BI-ready and can be connected to tools such as Amazon QuickSight
 
 ## Analytical goals
 
@@ -126,8 +127,8 @@ The platform produces analytics-ready datasets designed for market analysis, inc
 
 ## Future Improvements
 
-- Implementation of incremental dbt models for improved performance and cost efficiency
-- Hosting dbt documentation for easier data discovery and lineage exploration
-- Development of BI dashboards for market regime monitoring and exploratory analysis
+- Develop BI dashboards for market regime monitoring and exploratory analysis
+- Hosting dbt documentation to support data discovery and lineage exploration
+- Review and refine the rule-based bubble/crash signals by comparing them with known historical market events
 
 
